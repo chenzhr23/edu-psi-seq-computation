@@ -89,6 +89,7 @@ nohup /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/p
 
 ### Usage
 
-#### Ψ-site identification
+#### Ψ-site identification with User-defined thresholds
 
-##### calculate overall reverse transcription stop information
+
+
