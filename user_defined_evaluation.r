@@ -9,6 +9,7 @@ suppressMessages(library("gridExtra"))
 suppressMessages(library("reshape2"))
 suppressMessages(library("stringr"))
 suppressMessages(library("RColorBrewer"))
+suppressMessages(library("caret"))
 
 option_list = list(
   make_option(c("-f", "--rocfile"), type="character", default=NULL, 
