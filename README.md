@@ -91,5 +91,7 @@ nohup /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/p
 
 #### Ψ-site identification with User-defined thresholds
 
-
+```shell
+bash user_defined.sh 
+```
 
