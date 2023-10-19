@@ -16,6 +16,7 @@
 
 ### Remove adapter
 
+```shell
 ##M1
 nohup cutadapt -j 5 -m 5 --fasta -u 4 -u -6 M1.extendedFrags.collapse.fa.gz -o M1.cutadapt.extendedFrags.collapse.cutBarcodes.fa.gz  &> M1.cutadapt.log &
 ##M2
@@ -40,6 +41,7 @@ nohup cutadapt -j 5 -m 5 --fasta -u 4 -u -6 M10.extendedFrags.collapse.fa.gz -o 
 nohup cutadapt -j 5 -m 5 --fasta -u 4 -u -6 M11.extendedFrags.collapse.fa.gz -o M11.cutadapt.extendedFrags.collapse.cutBarcodes.fa.gz  &> M11.cutadapt.log &
 ##M12
 nohup cutadapt -j 5 -m 5 --fasta -u 4 -u -6 M12.extendedFrags.collapse.fa.gz -o M12.cutadapt.extendedFrags.collapse.cutBarcodes.fa.gz  &> M12.cutadapt.log &
+```
 
 ### Reads mapping
 
