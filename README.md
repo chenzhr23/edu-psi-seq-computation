@@ -91,5 +91,12 @@ nohup /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/p
 
 #### Ψ-site identification with User-defined thresholds
 
-
+```shell
+bash user_defined.sh M4_M1_roc_all.bed 1.5 0 1.5 1.5 0.02 2
+bash user_defined.sh M5_M2_roc_all.bed 1.5 0 1.5 1.5 0.02 2
+bash user_defined.sh M6_M3_roc_all.bed 1.5 0 1.5 1.5 0.02 2
+bash user_defined.sh M7_M1_roc_all.bed 1.5 0 1.5 1.5 0.02 2
+bash user_defined.sh M8_M2_roc_all.bed 1.5 0 1.5 1.5 0.02 2
+bash user_defined.sh M9_M3_roc_all.bed 1.5 0 1.5 1.5 0.02 2
+```
 
