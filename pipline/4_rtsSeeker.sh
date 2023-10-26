@@ -10,9 +10,9 @@ genome=$1
 fai=$2
 treatbam=$3
 inputbam=$4
-outFileName=$5
-min_read=$6
-FC=$7
+min_read=$5
+FC=$6
+outFileName=$7
 
 echo rtsSeeker start
 if [ $fai == 0 ]
