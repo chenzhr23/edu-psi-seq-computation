@@ -1,20 +1,32 @@
 # edu-psi-seq-computation
 
-## computation tools and scripts for edu-psi-seq
+## computational tools and scripts for edu-psi-seq
 
 ## Contents
-- [Remove adapter](#Remove-adapter)
-- [Reads mapping](#Reads-mapping)
-- [Benchmarking](#Benchmarking)
-- [Usage](#Usage)
-  - [Ψ-site identification](#Ψ-site-identification)
-    - [calculate overall reverse transcription stop information](#calculate-overall-reverse-transcription-stop-information)
-    - [pre-filt overall reverse transcription stop information](#pre-filt-overall-reverse-transcription-stop-information)
-    - [User-defined](#a-User-defined)
-  - [Ψ-site annotation](#Ψ-site-annotation)
-  - [Ψ-site target prediction](#Ψ-site-target-prediction)
 
-### Remove adapter
+- [Pipline](#Pipline)
+- [Case study](#Case-study)
+  - [Remove adapter](#Remove-adapter)
+  - [Reads mapping](#Reads-mapping)
+  - [Benchmarking and annotation](#Benchmarking-and-annotation)
+  - [Identification](#Identification)
+    - [Ψ-site identification with User-defined thresholds](#Ψ-site-identification-with-User-defined-thresholds)
+
+## Pipline
+
+```shell
+bash 0_software_test.sh rtsSeeker #test if rtsSeeker is being placed in your environment
+bash 1_quality_control.sh 6 input.fastq #bash 1_quality_control.sh 6 treat.fastq
+bash 2_adapter_remove_single.sh 0 0 0 TGGAATTCTCGGGTGCCAAGG 20 20 15 input.fastq.gz # 2_adapter_remove_single.sh 0 0 0 TGGAATTCTCGGGTGCCAAGG 20 20 15 treat.fastq.gz
+bash 3.0_STARindexing.sh 6 hg38.fa gencode.v32.chr_patch_hapl_scaff.annotation.gtf ./genome
+bash 3_STARalign.sh 6 ./genome input.removeadapter.fastq.gz 0#bash 3_STARalign.sh 6 ./genome treat.removeadapter.fastq.gz 0
+bash 4_rtsSeeker.sh hg38.fa hg38.fa.fai treatAligned.sortedByCoord.out.bam inputAligned.sortedByCoord.out.bam 10 1.5 treat_vs_input.bed
+```
+
+
+## Case study
+
+### 1. Remove adapter
 
 ```shell
 ##M1
@@ -43,7 +55,7 @@ nohup cutadapt -j 5 -m 5 --fasta -u 4 -u -6 M11.extendedFrags.collapse.fa.gz -o 
 nohup cutadapt -j 5 -m 5 --fasta -u 4 -u -6 M12.extendedFrags.collapse.fa.gz -o M12.cutadapt.extendedFrags.collapse.cutBarcodes.fa.gz  &> M12.cutadapt.log &
 ```
 
-### Reads mapping
+### 2. Reads mapping
 
 ```shell
 ##M1
@@ -72,7 +84,7 @@ nohup STAR --genomeDir /public/home/chenzr/software/qt_project/psiFinder_dev/psi
 nohup STAR --genomeDir /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/psiFinder/snakemake/genome/hg38 --readFilesIn ../M12.cutadapt.extendedFrags.collapse.cutBarcodes.fa.gz --runThreadN 8 --genomeLoad NoSharedMemory --alignEndsType EndToEnd --readFilesCommand zcat --outSAMtype BAM SortedByCoordinate --outFileNamePrefix M12.STAR. --outStd Log --limitBAMsortRAM 60000000000 --outFilterType BySJout --outFilterMultimapScoreRange 0 --outFilterMultimapNmax 30 --outFilterMismatchNmax 15 --outFilterMismatchNoverLmax 0.1 --outFilterScoreMin 0 --outFilterScoreMinOverLread 0 --outFilterMatchNmin 15 --outFilterMatchNminOverLread 0.8 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --seedSearchStartLmax 15 --seedSearchStartLmaxOverLread 1 --seedSearchLmax 0 --seedMultimapNmax 20000 --seedPerReadNmax 1000 --seedPerWindowNmax 100 --seedNoneLociPerWindow 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --quantMode TranscriptomeSAM GeneCounts --outSAMmode Full --outSAMattributes All --outSAMunmapped None --outSAMorder Paired --outSAMprimaryFlag AllBestScore --outSAMreadID Standard --outReadsUnmapped Fastx --alignEndsProtrude 150 ConcordantPair --limitOutSJcollapsed 5000000  &> M12.STAR.log &
 ```
 
-### Benchmarking
+### 3. Benchmarking and annotation
 
 ```shell
 ##hg38_HEK293_PSI_seq_rep1_cmc_M4_VS_M1_EndToEnd
@@ -89,7 +101,7 @@ nohup /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/p
 nohup /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/psiFinder/script/rtsSeeker --fa /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/psiFinder/snakemake/genome/hg38.fa --fai /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/psiFinder/snakemake/genome/hg38.fa.fai --treat /public/home/chenzr/eduPsiSeq_v3_totalRNA/allProcessingData/STAR_EndToEnd/M9.STAR.Aligned.sortedByCoord.out.bam --input /public/home/chenzr/eduPsiSeq_v3_totalRNA/allProcessingData/STAR_EndToEnd/M3.STAR.Aligned.sortedByCoord.out.bam -p 1.5 -t 5 -r 0.05 -M 1 --gene /public/home/chenzr/software/qt_project/psiFinder_dev/psiFinder_v1/build/psiFinder/script/hg38.gencode.v30.tRNA.refseqNcRNA.geneAnno.bed12 -f 1 -m 0 -s -n -w 20 -o /public/home/chenzr/eduPsiSeq_v3_totalRNA/allProcessingData/STAR_EndToEnd/hg38_HEK293_EDU_PSI_seq_V1_rep3_cmcAndTer_M9_VS_M3_EndToEnd/M9_M3_roc_all.bed 2>/public/home/chenzr/eduPsiSeq_v3_totalRNA/allProcessingData/STAR_EndToEnd/hg38_HEK293_EDU_PSI_seq_V1_rep3_cmcAndTer_M9_VS_M3_EndToEnd/M9_M3_roc_all_rtsSeeker.log
 ```
 
-### Usage
+### 4. Identification
 
 #### Ψ-site identification with User-defined thresholds
 
