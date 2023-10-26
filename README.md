@@ -19,7 +19,7 @@ bash 0_software_test.sh rtsSeeker #test if rtsSeeker is being placed in your env
 bash 1_quality_control.sh 6 input.fastq #bash 1_quality_control.sh 6 treat.fastq
 bash 2_adapter_remove_single.sh 0 0 0 TGGAATTCTCGGGTGCCAAGG 20 20 15 input.fastq.gz # 2_adapter_remove_single.sh 0 0 0 TGGAATTCTCGGGTGCCAAGG 20 20 15 treat.fastq.gz
 bash 3.0_STARindexing.sh 6 hg38.fa gencode.v32.chr_patch_hapl_scaff.annotation.gtf ./genome
-bash 3_STARalign.sh 6 ./genome input.removeadapter.fastq.gz 0#bash 3_STARalign.sh 6 ./genome treat.removeadapter.fastq.gz 0
+bash 3_STARalign.sh 6 ./genome input.removeadapter.fastq.gz 0 #bash 3_STARalign.sh 6 ./genome treat.removeadapter.fastq.gz 0
 bash 4_rtsSeeker.sh hg38.fa hg38.fa.fai treatAligned.sortedByCoord.out.bam inputAligned.sortedByCoord.out.bam 10 1.5 treat_vs_input.bed
 ```
 
